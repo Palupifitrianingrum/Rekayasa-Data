@@ -1,6 +1,5 @@
 version: 2
 
-# These tests replace the hand-written quality checks (qc = {...}) from Practice 10.
 models:
   - name: dim_customer
     columns:
@@ -11,6 +10,11 @@ models:
     columns:
       - name: product_id
         tests: [unique, not_null]
+      - name: category
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Accessories', 'Electronics', 'Furniture']
 
   - name: dim_date
     columns:
@@ -24,15 +28,15 @@ models:
       - name: date_key
         tests:
           - not_null
-          - relationships:            # no orphan dates
+          - relationships:
               arguments: {to: ref('dim_date'), field: date_key}
       - name: customer_id
         tests:
           - not_null
-          - relationships:            # no orphan customers
+          - relationships:
               arguments: {to: ref('dim_customer'), field: customer_id}
       - name: product_id
         tests:
           - not_null
-          - relationships:            # no orphan products
+          - relationships:
               arguments: {to: ref('dim_product'), field: product_id}
